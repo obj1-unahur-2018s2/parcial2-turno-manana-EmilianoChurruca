@@ -1,0 +1,166 @@
+import viajes.*
+import gimnasia.*
+import socios.*
+
+describe "group of tests" {
+	const moron = new ExcursionDeCiudad()
+	const bogota = new ExcursionCiudadTropical()
+	const cancun = new ViajeDePlaya()
+	const cumbre = new SalidaTrekking() 
+	const baile = new ClaseGimnasia()
+	const roque = new SocioTranquilo()
+	const pinamar = new ViajeDePlaya()
+	const ana = new SocioTranquilo()
+	
+	
+	fixture {
+		moron.atraccionesAVisitar(4)
+		bogota.atraccionesAVisitar(4)
+		cancun.largoPlaya(2000)
+		cumbre.senderosARecorrer(100)	
+		cumbre.diasDeSol(130)
+		moron.agregarIdioma("aleman")
+		bogota.agregarIdioma("aleman")
+		bogota.agregarIdioma("frances")
+		cumbre.agregarIdioma("aleman")
+		cumbre.agregarIdioma("frances")
+		roque.maximoDeActividades(2)
+		roque.agregarActividad(cancun)
+		roque.agregarActividad(pinamar)
+		ana.maximoDeActividades(3)
+		ana.agregarActividad(cancun)
+		ana.agregarActividad(pinamar)
+	}
+	
+	test "test ciudad normal" {
+
+		assert.equals(2,moron.cuantosDias())
+		assert.notThat(moron.implicaEsfuerzo())
+		assert.notThat(moron.sirveParaBroncearse())
+
+	}
+	
+	test "test ciudad tropical" {
+		
+		assert.equals(3,bogota.cuantosDias())
+		assert.notThat(bogota.implicaEsfuerzo())
+		assert.that(bogota.sirveParaBroncearse())
+	}
+	
+	test "ciudad normal con 8 atracciones " {
+		moron.atraccionesAVisitar(8)
+		
+		assert.equals(4,moron.cuantosDias())
+		assert.that(moron.implicaEsfuerzo())
+		assert.notThat(moron.sirveParaBroncearse())	
+	}
+	
+	test "test ciudad tropical con 8 atracciones" {
+		bogota.atraccionesAVisitar(8)
+		
+		assert.equals(5,bogota.cuantosDias())
+		assert.that(bogota.implicaEsfuerzo())
+		assert.that(bogota.sirveParaBroncearse())
+	}	
+	
+	test "test ciudad tropical con 10 atracciones" {
+		bogota.atraccionesAVisitar(10)
+		
+		assert.equals(6,bogota.cuantosDias())
+		assert.notThat(bogota.implicaEsfuerzo())
+		assert.that(bogota.sirveParaBroncearse())
+	}	
+	
+	test "test viaje de playa" {
+		
+		assert.equals(4,cancun.cuantosDias())
+		assert.that(cancun.implicaEsfuerzo())
+		assert.that(cancun.sirveParaBroncearse())
+	}
+	
+	test "test playa con menor largo playa" {
+		cancun.largoPlaya(1000)
+		
+		assert.equals(2,cancun.cuantosDias())
+		assert.notThat(cancun.implicaEsfuerzo())
+		assert.that(cancun.sirveParaBroncearse())
+	}
+	
+	test "test traking de 100 km" {
+		cumbre.senderosARecorrer(100)	
+		cumbre.diasDeSol(130)
+		
+		assert.equals(2,cumbre.cuantosDias())
+		assert.that(cumbre.implicaEsfuerzo())
+		assert.notThat(cumbre.sirveParaBroncearse())
+	}
+	
+	test "test traking de 50 km" {
+		cumbre.senderosARecorrer(50)	
+		cumbre.diasDeSol(240)
+		
+		assert.equals(1,cumbre.cuantosDias())
+		assert.notThat(cumbre.implicaEsfuerzo())
+		assert.that(cumbre.sirveParaBroncearse())
+	}
+	
+	test "test traking de 250 km" {
+		cumbre.senderosARecorrer(250)	
+		cumbre.diasDeSol(130)
+		
+		assert.equals(5,cumbre.cuantosDias())
+		assert.that(cumbre.implicaEsfuerzo())
+		assert.that(cumbre.sirveParaBroncearse())
+	}
+	
+	test "test ¿es interesante?"{
+		
+		assert.that(bogota.esInteresante())
+		assert.notThat(moron.esInteresante())
+	}
+	
+	test "test ¿es interesante 2?"{
+		moron.atraccionesAVisitar(5)
+		
+		assert.that(moron.esInteresante())
+	}
+	
+	test "test ¿es interesante 3?"{
+		
+		assert.notThat(cumbre.esInteresante())
+	}
+	
+	test "test ¿es interesante 4?"{
+		cumbre.diasDeSol(150)
+		
+		assert.that(cumbre.esInteresante())
+	}
+	
+	test "test gimnasia" {
+		
+		assert.equals(1,baile.cuantosDias())
+		assert.that(baile.implicaEsfuerzo())
+		assert.notThat(baile.sirveParaBroncearse())
+		assert.equals(#{"espaniol"}, baile.idioma())
+		}
+		
+	test "socio" {
+		cancun.largoPlaya(1000)
+		pinamar.largoPlaya(2000)
+		
+		assert.that(roque.esAdoradorDelSol())
+		assert.equals(#{pinamar},roque.actividadesEsforzadas())
+		assert.throwsExceptionWithMessage("No puede realizar otra actividad",
+			({roque.agregarActividad(baile)}))
+	}
+	
+	test "socio 2 " {
+		cancun.largoPlaya(1000)
+		pinamar.largoPlaya(2000)
+		ana.agregarActividad(baile)
+		
+		assert.notThat(ana.esAdoradorDelSol())
+		assert.equals(#{pinamar, baile},ana.actividadesEsforzadas())
+		
+	}
+}

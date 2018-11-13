@@ -1,0 +1,103 @@
+import viajes.*
+import gimnasia.*
+import socios.*
+
+describe "group of tests" {
+	const moron = new ExcursionDeCiudad()
+	const bogota = new ExcursionCiudadTropical()
+	const cancun = new ViajeDePlaya()
+	const cumbre = new SalidaTrekking() 
+	const baile = new ClaseGimnasia()
+	const roque = new SocioCoherente()
+	const pinamar = new ViajeDePlaya()
+	const ana = new SocioTranquilo()
+	const haedo = new ExcursionDeCiudad()
+	const juan = new SocioRelajado()
+	
+	
+	fixture {
+		moron.atraccionesAVisitar(8)
+		haedo.atraccionesAVisitar(3)
+		bogota.atraccionesAVisitar(5)
+		bogota.agregarIdioma("aleman")
+		bogota.agregarIdioma("frances")
+		moron.agregarIdioma("aleman")
+		moron.agregarIdioma("italiano")
+		juan.agregarIdioma("frances")
+		moron.noEsInteresante()
+		ana.maximoDeActividades(3)
+		roque.maximoDeActividades(2)
+		}
+		
+		
+		
+//		cancun.largoPlaya(2000)
+//		cumbre.senderosARecorrer(100)	
+//		cumbre.diasDeSol(130)
+//		moron.agregarIdioma("aleman")
+//		
+//		cumbre.agregarIdioma("aleman")
+//		cumbre.agregarIdioma("frances")
+//		roque.maximoDeActividades(2)
+//		roque.agregarActividad(cancun)
+//		roque.agregarActividad(pinamar)
+//		ana.maximoDeActividades(3)
+//		ana.agregarActividad(cancun)
+//		ana.agregarActividad(pinamar)
+//		roque.agregarIdioma("espaniol")
+//		roque.agregarIdioma("kechua")
+	
+	
+	test "le atrae actividad socio tranquilo"{
+		
+		assert.that(ana.leAtraeLaActividad(moron))
+		assert.notThat(ana.leAtraeLaActividad(bogota))
+	}
+	
+	test "le atrae actividad socio coherente"{
+		
+		assert.that(roque.esAdoradorDelSol())
+		assert.that(bogota.sirveParaBroncearse())
+		assert.that(roque.leAtraeLaActividad(moron)) 
+		assert.that(roque.leAtraeLaActividad(bogota))
+		assert.notThat(roque.leAtraeLaActividad(haedo))
+	}
+	
+	
+	test "le atrae actividad socio relajado"{
+		
+		assert.notThat(juan.leAtraeLaActividad(moron))
+		assert.that(juan.leAtraeLaActividad(bogota))
+	}
+	
+	test "recomedada para socio tranquilo" {
+		ana.agregarActividad(bogota)
+		
+		
+		assert.notThat(moron.esRecomendada(ana))
+		assert.notThat(bogota.esRecomendada(ana))
+		
+	}
+	
+	test "recomedada para socio tranquilo 2" {
+		moron.interesante()
+		
+		assert.that(moron.esRecomendada(ana))
+		
+	}
+	
+
+	
+}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
